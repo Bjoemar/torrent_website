@@ -1,0 +1,52 @@
+<form action="/update_crawling_profile" method="POST" id="customize_form">
+	<input type="hidden" name="profile_id" id="profile_id">
+	<div class="input-group mb-3">
+<!-- 	    <div class="input-group-prepend">
+	      	<span class="input-group-text">Parsing Name</span>
+	    </div> -->
+	    <input type="text" class="form-control" name="parse_name" required placeholder="Profile Name">
+	</div>
+
+	<div class="input-group mb-3">
+<!-- 		<div class="input-group-prepend">
+			<span class="input-group-text">Website URL</span>
+		</div> -->
+		<input type="text" class="form-control" name="WEB_URL" required placeholder="Website URL">
+	</div>
+
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<!-- <span class="input-group-text">Torrent Category</span> -->
+		</div>
+		<select id="customize_cat" class="form-control" name="script_category">
+			<option value="AdultMovie">Adult Movie</option>
+			<option value="Movies">Movies</option>
+			<option value="Drama">Drama</option>
+			<option value="Entertainment">Entertainment</option>
+			<option value="Documentary">Documentary</option>
+			<option value="Netflix">Streaming (Netflix)</option>
+			<option value="Disney">Streaming (Disney plus)</option>
+			<option value="Amazon">Streaming (Amazon)</option>
+			<option value="HBO">Streaming (HBO)</option>
+			<option value="Animation">Animation</option>
+			<option value="Music">Music</option>
+			<option value="Sports">Sports</option>
+			<option value="Utility">Utility</option>
+			<option value="Game">Game</option>
+			<option value="Comic">Comic</option>
+			<option value="Subtitle">Subtitle</option>
+		</select>
+	</div>
+	<label><strong>Primary Crawl Code</strong></label>
+		<textarea name="primary_looping_code" class="form-control" style=" background: black; color: skyblue; height: 220px;">
+
+		</textarea>
+
+	<label><strong>Inner Crawl Code</strong></label>
+	<textarea name="secondary_code" class="form-control" style=" background: black; color: skyblue; height: 560px;">
+
+	</textarea>
+
+	<button class="btn btn-primary mt-4 ">SAVE</button>
+
+</form>

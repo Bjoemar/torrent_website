@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MYTORRENT</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/style/css">
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+
+	<div id="web_head"></div>
+	<div id="view_body"></div>
+</body>
+
+
+
+
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- <script type="text/javascript" src="/torrent/script"></script> -->
+	<script type="text/javascript">
+
+		var socket = io();
+		if (window.innerWidth > 768) {
+			$('#web_head').load('/torrent_head');
+		} else {
+			$('#web_head').load('/mobile_header');
+		}
+
+		socket.emit('new_user');
+
+
+		socket.emit('get_latest');
+		socket.emit('DailyTop10');
+
+		if (window.innerWidth > 768) {
+			$('#web_head').load('/torrent_head');
+		}
+
+		$('#web_body').load('/torrent_body');
+
+		$('#view_body').load('/view_torrent');
+
+		var url = window.location.pathname.split('/');
+		socket.emit('query' , url);
+		socket.emit('loadgif');
+
+		socket.on('view_file',function(data){
+			setTimeout(function(){
+				$('.'+data[0]['category']).addClass('active_menu');
+				$('.categories').html($('.active_menu a').html());
+			},100)
+
+			$('#tor_viewer').attr('src', data[0]['link'])
+			$('.view_torrent_header h1').html(data[0]['title']);
+			$('.head_list .views span').html(data[0]['views']);
+			$('.head_list .time span').html(data[0]['data']);
+
+			var structure_len = data[0]['structure'].length;
+
+			// if (structure_len > 0) {
+			// 	$('.torrent_info_holder').append(data[0]['structure']);
+			// } else  {
+
+				for(x = 0; x < structure_len; x++) {
+					$('.torrent_info_holder').append(data[0]['structure'][x]);
+				}
+			// }
+
+			var image_len = data[0]['image'].length;
+			for(x = 0; x < image_len; x++) {
+
+				$('.torrent_image_holder').append('<img src="'+data[0]['image'][x]+'">');
+			}
+			setTimeout(function(){
+
+				$('td').find('a').eq(0).html('<i class="fas fa-cloud-download-alt"></i> Torrent File')
+				$('td').find('a').eq(1).html('<i class="fas fa-magnet"></i> Magnet Link')
+				$('td').find('a').addClass('btn-sm')
+			},100)
+			setTimeout(function(){
+
+				socket.emit('add_view',data[0]['_id']);
+			},3000)
+		})
+
+		socket.on('gif_data',function(data){
+			$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')
+			$('.gif_holder').eq(1).html('<a target="_blank" href="//'+data[0]['link2']+'"><img src="'+data[0]['image_2']+'"></a>')
+			$('.gif_holder').eq(2).html('<a target="_blank" href="//'+data[0]['link3']+'"><img src="'+data[0]['image_3']+'"></a>')
+		})
+
+
+		socket.on('latest_update',function(db_data){
+			var count = db_data.length;
+			$('#latest_update').html('');
+			for(i = 0; i < count; i++) 
+			{
+
+				$('#latest_update').append('<li class="post_row">'+
+												'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
+												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
+												'<span class="list_time">'+db_data[i]['data']+'</span>'+
+												'<div class="clear"></div>'+
+											'</li>')
+			}
+
+		});
+
+		socket.on('Notice' ,function(db_data){
+			var count = db_data.length;
+			$('#notice_list').html('');
+			for(i = 0; i < 5; i++) 
+			{
+
+				$('#notice_list').append('<li class="post_row">'+
+												'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
+												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
+												'<span class="list_time">'+db_data[i]['data']+'</span>'+
+												'<div class="clear"></div>'+
+											'</li>')
+			}
+		})
+
+		socket.on('DailyTop10',function(db_data){
+			var count = db_data.length;
+			$('#main_top_10').html('');
+			for(i = 0; i < count; i++) 
+			{
+
+				$('#main_top_10').append('<li class="post_row">'+
+												'<span class="num_pos">'+(i + 1)+'</span>'+
+												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
+												'<span class="list_time">'+db_data[i]['data']+'</span>'+
+												'<div class="clear"></div>'+
+											'</li>')
+			}
+		})
+		
+
+
+
+		$(document).ready(function(){
+			setTimeout(function(){
+				$('.view_header').show();
+			},100);
+		})
+
+		function file_download(link) {
+			document.location.href = link;
+		}
+
+
+
+	</script>
+</html>

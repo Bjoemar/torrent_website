@@ -1,0 +1,91 @@
+<form action="/save_crawling_profile" method="POST">
+	<input type="hidden" name="profile_id">
+	<div class="input-group mb-3">
+
+	    <input type="text" class="form-control" name="parse_name" required placeholder="Profile Name">
+	</div>
+
+	<div class="input-group mb-3">
+
+		<input type="text" class="form-control" name="WEB_URL" required placeholder="Website URL">
+	</div>
+
+	<div class="input-group mb-3">
+		<div class="input-group-prepend">
+			<!-- <span class="input-group-text">Torrent Category</span> -->
+		</div>
+		<select class="form-control" name="script_category">
+			<option value="AdultMovie">Adult Movie</option>
+			<option value="Movies">Movies</option>
+			<option value="Drama">Drama</option>
+			<option value="Entertainment">Entertainment</option>
+			<option value="Documentary">Documentary</option>
+			<option value="Netflix">Streaming (Netflix)</option>
+			<option value="Disney">Streaming (Disney plus)</option>
+			<option value="Amazon">Streaming (Amazon)</option>
+			<option value="HBO">Streaming (HBO)</option>
+			<option value="Animation">Animation</option>
+			<option value="Music">Music</option>
+			<option value="Sports">Sports</option>
+			<option value="Utility">Utility</option>
+			<option value="Game">Game</option>
+			<option value="Comic">Comic</option>
+			<option value="Subtitle">Subtitle</option>
+			
+		</select>
+	</div>
+	<label><strong>Primary Crawl Code</strong></label>
+		<textarea name="primary_looping_code" class="form-control" style=" background: black; color: skyblue; height: 220px;">
+				function run_crawl_1(container_link) {
+					$('.list-body').find('.list-item').each(function(){
+						var torrent_basic_info = [];
+				                                              
+						torrent_basic_info.link = $(this).find('a').attr('href');
+						torrent_basic_info.size = $(this).find('.wr-size').html();
+						torrent_basic_info.thumbnail = null;
+						torrent_basic_info.type = null;
+
+						var temp_title = $(this).find('a').html();
+						sendLogs(socket,'Link of '+temp_title+' has been fetch.');	
+
+						container_link.push(torrent_basic_info);
+					});
+
+					return container_link;
+				}
+				
+				
+		</textarea>
+
+	<label><strong>Inner Crawl Code</strong></label>
+	<textarea name="secondary_code" class="form-control" style=" background: black; color: skyblue; height: 560px;">
+			function run_crawl_2(array_holder) {
+					var table_information = [];
+					var torrent_images = [];
+					var torrent_title = $('article h1').attr('content');
+
+					$('.view-img').find('img').each(function(){
+						var image = $(this).attr('src');
+
+						torrent_images.push(image);
+					})
+
+					$('.view-torrent').find('table').each(function(){
+						var table_data = '<table class="table table-bordered">'+$(this).html()+'</table>';
+						table_information.push(table_data);
+					})
+
+					torrent_obj.information = table_information;
+					torrent_obj.images = torrent_images;
+					torrent_obj.title = torrent_title;
+					torrent_obj.description = $('.view-content').html();
+	                                torrent_obj.torrent_conv = [];
+
+					return torrent_obj;
+				}
+					
+	</textarea>
+
+	<button class="btn btn-primary mt-4">SAVE</button>
+
+</form>

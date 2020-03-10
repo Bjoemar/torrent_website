@@ -1,0 +1,133 @@
+<div class="web_head">
+	<div class="inner_content">
+		<div class="head_1">
+			<ul class="left_content">
+				<li class="twitter"><a href="#"><i class="fab fa-twitter"></i>&nbsp;트위터</a></li>
+				<li class="tweet_share"><a href="#"><i class="fab fa-twitter-square"></i>&nbsp;트윗공유</a></li>
+				<li class="save mr-5" ><a href="#"><i class="fas fa-bookmark"></i>&nbsp;즐겨찾기</a></li>
+				<li ><a href="#"><i class="fab fa-twitter"></i>&nbsp;토렌트프로그램</a></li>
+				<li ><a href="#"><i class="fab fa-twitter-square"></i>&nbsp;곰플레이어</a></li>
+				<li ><a href="#"><i class="fas fa-bookmark"></i>&nbsp;다음플레이어</a></li>
+			</ul>
+
+
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="inner_content">
+		<div class="head_2">
+			<div class="header-logo">
+				<a href="/" title="#">
+				토렌트집 </a>
+				<span class="header-desc">
+				속도빠른 토렌트 파일공유!
+				</span>
+			</div>
+			<div class="header-right">
+				<div class="header-search">
+					<form name="tsearch" action="/search" method="get"  role="form" class="form">
+						<div class="input-group input-group-sm">
+							<input type="text" name="skeyword" class="form-control input-sm" value="" placeholder="통합검색">
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-sm"><i class="fa fa-search fa-lg"></i></button>
+							</span>
+						</div>
+					</form>
+				</div>
+				<div class="header-keyword">
+					<h2>인기검색어</h2>
+					<ul>
+						<li><a href="#">스토브리그, </a></li>
+						<li><a href="#">겨울왕국2, </a></li>
+						<li><a href="#">김사부, </a></li>
+						<li><a href="#">포레스트, </a></li>
+						<li><a href="#">골목식당, </a></li>
+						<li><a href="#">미스터트롯, </a></li>
+						<li><a href="#">이태원, </a></li>
+						<li><a href="#">포드, </a></li>
+						<li><a href="#">백두산, </a></li>
+						<li><a href="#">사랑의 불시착, </a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div class="inner_content" style="background: #0086ad;">
+			<div class="head_3">
+				<ul class="menu_nav">
+					<li class="AdultMovie">
+						<a href="/AdultMovie">성인</a>
+					</li>
+					<li  class="Movies" >
+						<a href="/Movies">영화</a>
+					</li>
+					<li  class="Broadcast" >
+						<a href="/Drama">방송</a>
+						<div class="drop_down">
+							<a href="/Drama"><button>TV드라마</button></a>
+							<a href="/Entertainment"><button>TV예능</button></a>
+							<a href="/Documentary"><button>다큐/시사</button></a>
+						</div>
+					</li>
+					<li  class="Streaming" >
+						<a href="/Netflix">스트리밍</a>
+						<div class="drop_down">
+							<a href="/Netflix"><button >넷플릭스</button></a>
+							<a href="/Disney"><button>디즈니 플러스</button></a>
+							<a href="/Amazon"><button>아마존 프라임 비디오</button></a>
+							<a href="/HBO"><button>HBO</button></a>
+						</div>
+					</li>
+					<li  class="Animation" >
+						<a href="/Animation">애니</a>
+					</li>
+					<li  class="Music" >
+						<a href="/Music">음악</a>
+					</li>
+					<li  class="Sports" >
+						<a href="/Sports">스포츠</a>
+					</li>
+					<li  class="Utility" >
+						<a href="/Utility">유틸리티</a>
+					</li>
+					<li  class="Game" >
+						<a href="/Game">게임</a>
+					</li>
+					<li  class="Comic" >
+						<a href="/Comic">도서/만화</a>
+					</li>
+					<li  class="Subtitle" >
+						<a href="/Subtitle">자막자료실</a>
+					</li>
+					<li  class="Notice" >
+						<a href="/Notice">커뮤니티</a>
+					</li>
+
+				</ul>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+		<div class="inner_content view_header" style="background: red; height: 50px; display: none;">
+			<div class="head_2">
+				<h2 class="categories"></h2>
+			</div>
+		</div>
+
+
+</div>
+
+<script type="text/javascript">
+	
+	$('.menu_nav li').mouseenter(function(){
+		$('.drop_down').hide();
+		$(this).find('.drop_down').slideDown('fast')
+	})
+
+	$('#web_body , #list_body').mouseenter(function(){
+		$('.drop_down').hide();
+	})
+</script>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/style/admin_css">
+
+	<!-- include libraries(jQuery, bootstrap) -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- include summernote css/js -->
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
+
+	<title>ADMIN PAGE</title>
+</head>
+<body>
+	<div class="sidebar">
+		<!-- <h1>Administrator</h1> -->
+		<button id="load_c_c"><i class="fas fa-list"></i> &nbsp;Crawler List</button>
+		<button id="load_c_p"><i class="fas fa-pen"></i> &nbsp;Create Profile</button>
+		<button id="load_web_content"><i class="fas fa-window-restore"></i> &nbsp;Website Content</button>
+		<button id="load_web_data"><i class="fas fa-database"></i> &nbsp;Website Data</button>
+		<div class="logs">
+
+		</div>
+
+	</div>
+
+	
+
+	<!-- <h1>ADMIN PAGE</h1> -->
+	<div class="admin_content" id="admin_body">
+
+	</div>
+
+	
+	<!-- <h1>ADMIN PAGE</h1> -->
+	<div class="admin_content">
+
+
+	</div>
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+	});
+	
+	var socket = io();
+
+	var active_loader;
+
+
+
+	$('#admin_body').load('/crawl_table');
+	// $('#admin_body').load('/web_site_data');
+	socket.emit('get_parsing_profile');
+
+	$('#load_c_p').click(function(){
+		$('#admin_body').load('/crawling_codes');
+	});
+
+	$('#load_web_data').click(function(){
+		$('#admin_body').load('/web_site_data');
+		setTimeout(function(){
+			var data_cat = $('.data_content_list').val();
+			socket.emit('get_torrent_data',{'category' : data_cat });
+		},200)
+	});
+
+
+
+	$('#load_web_content').click(function(){
+		socket.emit('loadgif');
+
+		$('#admin_body').hide();
+		$('#admin_body').load('/web_content_modify');
+		setTimeout(function(){
+			$('#summernote').summernote({
+			  height:550,                 // set editor height
+			  minHeight: null,             // set minimum height of editor
+			  maxHeight: null,             // set maximum height of editor
+			  focus: true                  // set focus to editable area after initializing summernote
+			});
+			setTimeout(function(){
+				$('#admin_body').show();
+			},200)
+		},200)
+	});
+
+
+	$('#load_c_c').click(function(){
+		$('#admin_body').load('/crawl_table');
+		socket.emit('get_parsing_profile');
+	});
+
+
+	socket.on('pass_admin_data',function(data){
+		console.log(data)
+		$('.site_data').html('')
+		for(i = 0; i < data.length; i++) {
+			$('.site_data').append('<tr>'+
+		     '<th scope="row">'+data[i].torrent_id+'</th>'+
+		      '<td>'+data[i].category+'</td>'+
+		      '<td>'+data[i].title+'</td>'+
+		      '<td><button value="'+data[i]['_id']+'" class="btn btn-danger btn-sm delete_torrent">DELETE</button> <button class="btn btn-dark btn-sm">UPDATE</button></td>'+
+		    '</tr>')
+		}
+	});
+
+	$(document).on('click' , '.delete_torrent', function(){
+		var _id = $(this).val();
+		$(this).parent().parent().remove();
+		socket.emit('delete_torrent' , {'id' : _id })
+	})
+
+
+	socket.on('parsing_profile',function(data){
+
+		var len = data.length;
+
+		for(i = 0; i < len; i++)
+		{
+			$('.parsing_list').append('<tr><td>'+data[i]['profile_name']+'</td><td>'+data[i]['website_url']+'</td><td>'+data[i]['category']+'</td><td><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" data-name="'+data[i]['profile_id']+'"></div></div></td><td>	<button class="remove_script btn btn-sm btn-danger" value="'+data[i]['profile_id']+'">Remove</button> <button class="update_script btn btn-sm btn-primary" value="'+data[i]['profile_id']+'">Customize</button> <button class=" btn btn-sm btn-success init_codes" value="'+data[i]['profile_id']+'">Initialize</button></td><td><input type="number" name="start_page" value="1" class="form-control start_page"></td><td><input class="form-control"type="time" name="time" value="12:00:00"></td></tr>');
+		}
+	})
+
+	socket.on('script_modify', function(data){
+		$('input[name=profile_id]').val(data[0]['profile_id'])
+		$('input[name=parse_name]').val(data[0]['profile_name']);
+		$('input[name=WEB_URL]').val(data[0]['website_url']);
+
+		let sel_val = data[0]['category'];
+
+
+		$('#customize_cat').val(sel_val);
+		$('textarea[name=primary_looping_code]').html(data[0]['primary_looping_code']);
+
+		$('textarea[name=secondary_code]').html(data[0]['secondary_code']);
+
+	});
+
+
+	socket.on('recieve_log',function(data){
+		$('.logs').append('<p>'+data['message']+'</p>');
+		// $('.logs').animate({()});
+
+		$('.logs').animate({
+			scrollTop : $(".logs")[0].scrollHeight + 100,
+		},500)
+
+	})
+
+	$(document).ready(function(){
+
+		$(document).on('click' , '.remove_script' , function(){
+			$(this).parent().parent().hide();
+			var profile_id = $(this).val();
+			socket.emit('remove_script' , profile_id);
+		})
+
+		$(document).on('click' , '.update_script' , function(){
+			$('#admin_body').load('/update_crawl');
+
+			var profile_id = $(this).val();
+			socket.emit('update_script' , profile_id);
+		});
+
+		$(document).on('click','.init_codes',function(){
+			$(this).parent().prev().find('.progress-bar').addClass('active_loader');
+			var profile_id = $(this).val();
+			var start_page_count = $(this).parent().next().find('.start_page').val();
+			var start_page = $(this).parent().prev().find('small').addClass('active_logs');
+			socket.emit('initialize_script' , {'parse_id' : profile_id , 'start' : start_page_count});
+		})
+
+
+	})
+
+	socket.on('percent',function(data){
+		
+		$('.active_loader').css('width' , data+'%');
+	})
+
+
+	socket.on('web_crawl_done',function(data){
+		setTimeout(function(){
+
+			$('.active_loader').css('width' , '0');
+			$('.progress-bar').removeClass('active_loader');
+			$('.logs').html('Web Crawling Done.');
+		},3000);
+
+	})
+
+	$('.imageholder img').click(function(){
+		$(this).next().click();
+	})
+
+
+	function readURL(input) {
+	  if (input.files && input.files[0]) {
+	    var reader = new FileReader();
+	    
+	    reader.onload = function(e) {
+	    	console.log($(input).next())
+	    	$(input).prev().prev().val(e.target.result);
+	    	$(input).prev().attr('src', e.target.result);
+	      // $('#blah').attr('src', e.target.result);
+	    }
+	    
+	    reader.readAsDataURL(input.files[0]);
+	  }
+	}
+
+	$("#image_1").change(function() {
+	 	readURL(this)
+	});
+	$("#image_2").change(function() {
+	 	readURL(this)
+	});
+	$("#image_3").change(function() {
+	 	readURL(this)
+	});
+
+	socket.on('gif_data',function(data){
+		$('#image_1').attr('src' , data[0]['image_1']);
+		$('#image_2').attr('src' , data[0]['image_2']);
+		$('#image_3').attr('src' , data[0]['image_3']);
+		$('input[name=image_1]').val(data[0]['image_1']);
+		$('input[name=image_2]').val(data[0]['image_2']);
+		$('input[name=image_3]').val(data[0]['image_3']);
+
+		$('input[name=link1]').val(data[0]['link1']);
+		$('input[name=link2]').val(data[0]['link2']);
+		$('input[name=link3]').val(data[0]['link3']);
+
+	})
+
+	$(document).on('click' , '#find_torrent', function(){
+		var page = $('#page_count').val();
+		var category = $('.data_content_list').val();
+		socket.emit('browse_torrent' , {'page' : page , 'category' : category});
+	})
+
+
+
+	socket.on('status_no_data',function(){
+		$('.site_data').html('<tr><td><h2>0 DATA FOUND</h2></td></tr>');
+
+	})
+
+
+</script>
+</html>

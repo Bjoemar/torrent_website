@@ -1,0 +1,45 @@
+<div class="inner_content">
+	
+	<form action="/save/torrent_notice" method="POST">
+	<h2>Create Notice</h2>
+	  <div class="form-group">
+	    <label for="exampleInputEmail1">Title</label>
+	    <input type="text" class="form-control"  name="notice_title">
+	  </div>
+
+	  <div class="form-group">
+	    <textarea id="summernote" name="editordata"></textarea>
+	  </div>
+
+
+	  
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+
+<div class="inner_content" style="margin-left: 35px;">
+	<form action="/save_modify_gif" method="POST">	
+
+		<h2>Image editor</h2>
+		<div class="imageholder">
+			<input type="hidden" name="image_1">	
+			<img src="https://torrenthall7.com/uploads/banner/2020/02/8eb307c0ce02c5aa008afe03b1370cb7.gif">
+			<input type="file" hidden id="image_1">
+			<input type="text" class="form-control mt-3" name="link1" placeholder="Website URL" required>
+		</div>
+		<div class="imageholder">
+			<input type="hidden" name="image_2">
+			<img src="https://torrenthall7.com/uploads/banner/2020/02/d95a94885797d80ed453c570e29dd303.jpg">
+			<input type="file" hidden id="image_2">
+			<input type="text" class="form-control mt-3" name="link2" placeholder="Website URL" required>
+		</div>
+		<div class="imageholder">
+			<input type="hidden" name="image_3">
+			<img src="https://torrenthall7.com/uploads/banner/2020/01/6fdda5519ba08ed58c75ab0324d19233.gif">
+			<input type="file"  hidden id="image_3">
+			<input type="text" class="form-control mt-3" name="link3" placeholder="Website URL" required>
+		</div>
+
+		<button id="gif_update_btn">UPDATE</button>
+	</form>
+</div>
