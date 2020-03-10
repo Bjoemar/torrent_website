@@ -35,10 +35,44 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
+
+
+app.get('/movie_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Movies.json'));
+});
+
+app.get('/drama_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Drama.json'));
+});
+
+app.get('/entertaiment_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Entertainment.json'));
+});
+
+app.get('/documentary_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Documentary.json'));
+});
+
+app.get('/subtitle_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Subtitle.json'));
+});
+
+app.get('/latest_json_data', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/latest.json'));
+});
+
+
+
+
 app.get('/', function(req , response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
+
+
+app.get('/torrent_json', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/test.json'));
+});
 
 app.get('/torrent_head', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/header.html'));
@@ -143,6 +177,20 @@ server.listen(server_port , server_ip_address , function(){
 
 
 
+get_collection_db('Movies','jsons/Movies.json');
+get_collection_db('AdultMovie','jsons/AdultMovie.json');
+get_collection_db('Drama','jsons/Drama.json');
+get_collection_db('Streaming','jsons/Streaming.json');
+get_collection_db('Entertainment','jsons/Entertainment.json');
+get_collection_db('Documentary','jsons/Documentary.json');
+get_collection_db('Sports','jsons/Sports.json');
+get_collection_db('Utility','jsons/Utility.json');
+get_collection_db('Game','jsons/Game.json');
+get_collection_db('Comic','jsons/Comic.json');
+get_collection_db('Subtitle','jsons/Subtitle.json');
+get_collection_db('Notice','jsons/Notice.json');
+
+
 
 
 app.post('/save/torrent_notice', function(req , response) {
@@ -180,8 +228,7 @@ app.post('/save/torrent_notice', function(req , response) {
 			        	dbo.collection('torrent').insertOne(torrent_object, function(err, res){
 			      		    db.close();
 			      		}); //End of insertOne
-  		
-
+  	
   				    }
   				})
 
@@ -338,24 +385,6 @@ let year = date_ob.getFullYear();
 
 io.on('connection',function(socket){
 
-
-	socket.on('new_user',function(){
-		get_collection_db('Movies',socket);
-		get_collection_db('AdultMovie',socket);
-		get_collection_db('Drama',socket);
-		get_collection_db('Streaming',socket);
-		get_collection_db('Entertainment',socket);
-		get_collection_db('Documentary',socket);
-		get_collection_db('Sports',socket);
-		get_collection_db('Utility',socket);
-		get_collection_db('Game',socket);
-		get_collection_db('Comic',socket);
-		get_collection_db('Subtitle',socket);
-		get_collection_db('Notice',socket);
-
-
-
-	})
 
 	socket.on('get_latest',function(){
 
@@ -671,7 +700,8 @@ io.on('connection',function(socket){
 
 // FUNTIONS
 
-function get_collection_db(collection,socket) {
+function get_collection_db(collection,path_name) {
+	console.log('JOEMAR')
 	MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
 		if (err) throw err;
 
@@ -679,12 +709,15 @@ function get_collection_db(collection,socket) {
 
 		var result_holder = [];
 
-
+		var collection_name = collection;
 
 		dbo.collection('torrent').find({'category' : collection}).limit(10).sort({_id : -1}).toArray(function(err , main_result){
 			if (main_result.length > 0) {
 				if (err) throw err;
-					socket.emit(collection , main_result);
+					arr_holder = [];
+					arr_holder.push(main_result);
+					let collection_name = JSON.stringify(arr_holder);
+					fs.writeFileSync(path_name, collection_name);
 				}
 		})
 	})
@@ -806,6 +839,18 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 
 	} else {
 		socket.emit('web_crawl_done');
+		get_collection_db('Movies','jsons/Movies.json');
+		get_collection_db('AdultMovie','jsons/AdultMovie.json');
+		get_collection_db('Drama','jsons/Drama.json');
+		get_collection_db('Streaming','jsons/Streaming.json');
+		get_collection_db('Entertainment','jsons/Entertainment.json');
+		get_collection_db('Documentary','jsons/Documentary.json');
+		get_collection_db('Sports','jsons/Sports.json');
+		get_collection_db('Utility','jsons/Utility.json');
+		get_collection_db('Game','jsons/Game.json');
+		get_collection_db('Comic','jsons/Comic.json');
+		get_collection_db('Subtitle','jsons/Subtitle.json');
+		get_collection_db('Notice','jsons/Notice.json');
 	}
 
 }

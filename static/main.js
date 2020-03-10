@@ -87,38 +87,86 @@ $(document).ready(function(){
 });
 
 
-
-
-
-socket.on('Movies',function(data){
-	console.table(data)
-	append_data(data,'movie_top_10','성인');
+$.ajax({
+	url : '/movie_json_data',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'movie_top_10','성인');
+	}
 })
 
-socket.on('AdultMovie',function(data){
-	append_data(data,'adult_top_10','영화');
-
+$.ajax({
+	url : '/drama_json_data',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'drama_top_10','성인');
+	}
 })
 
-socket.on('Drama',function(data){
+
+$.ajax({
+	url : '/entertaiment_json_data',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'shows_top_10','성인');
+	}
+})
+
+
+$.ajax({
+	url : '/documentary_json_data',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'docs_top_10','성인');
+	}
+})
+
+
+$.ajax({
+	url : '/subtitle_json_data',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'archive_top_10','성인');
+	}
+})
+
+
+
+
+
+
+// var movie_json = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
+
+// socket.on('Movies',function(data){
+// 	console.table(data)
+
+// 	append_data(data,'movie_top_10','성인');
+// })
+
+// socket.on('AdultMovie',function(data){
+// 	append_data(data,'adult_top_10','영화');
+
+// })
+
+// socket.on('Drama',function(data){
 	
-	append_data(data,'drama_top_10','TV드라마');
+// 	append_data(data,'drama_top_10','TV드라마');
 
-})
+// })
 
-socket.on('Entertainment',function(data){
-	append_data(data,'shows_top_10','TV예능');
-})
-
-
-socket.on('Documentary',function(data){
-	append_data(data,'docs_top_10','다큐/시사');
-})
+// socket.on('Entertainment',function(data){
+// 	append_data(data,'shows_top_10','TV예능');
+// })
 
 
-socket.on('Subtitle',function(data){
-	append_data(data,'archive_top_10','자막자료실');
-});
+// socket.on('Documentary',function(data){
+// 	append_data(data,'docs_top_10','다큐/시사');
+// })
+
+
+// socket.on('Subtitle',function(data){
+// 	append_data(data,'archive_top_10','자막자료실');
+// });
 
 
 socket.on('main_top_10',function(data){
