@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io();
+		socket.emit('new_user');
+		socket.emit('get_latest');
+		socket.emit('DailyTop10');
+		var url = window.location.pathname.split('/');
+		socket.emit('query' , url);
+		socket.emit('loadgif');
+	</script>
 	<title>MYTORRENT</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -17,16 +27,7 @@
 	<link rel="stylesheet" type="text/css" href="/style/css">
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket = io();
-		socket.emit('new_user');
-		socket.emit('get_latest');
-		socket.emit('DailyTop10');
-		var url = window.location.pathname.split('/');
-		socket.emit('query' , url);
-		socket.emit('loadgif');
-	</script>
+
 </head>
 <body>
 
