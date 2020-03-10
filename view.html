@@ -17,7 +17,15 @@
 	<link rel="stylesheet" type="text/css" href="/style/css">
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<script>
+		var socket = io();
+		socket.emit('new_user');
+		socket.emit('get_latest');
+		socket.emit('DailyTop10');
+		var url = window.location.pathname.split('/');
+		socket.emit('query' , url);
+		socket.emit('loadgif');
+	</script>
 </head>
 <body>
 
@@ -35,18 +43,14 @@
 	<!-- <script type="text/javascript" src="/torrent/script"></script> -->
 	<script type="text/javascript">
 
-		var socket = io();
+
 		if (window.innerWidth > 768) {
 			$('#web_head').load('/torrent_head');
 		} else {
 			$('#web_head').load('/mobile_header');
 		}
 
-		socket.emit('new_user');
 
-
-		socket.emit('get_latest');
-		socket.emit('DailyTop10');
 
 		if (window.innerWidth > 768) {
 			$('#web_head').load('/torrent_head');
@@ -56,9 +60,7 @@
 
 		$('#view_body').load('/view_torrent');
 
-		var url = window.location.pathname.split('/');
-		socket.emit('query' , url);
-		socket.emit('loadgif');
+
 
 		socket.on('view_file',function(data){
 			setTimeout(function(){

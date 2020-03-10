@@ -32,7 +32,7 @@ var request = require('request').defaults({ encoding: null });;
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/torrent";
-var url = "mongodb+srv://joemar12:joemar12@cluster0-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
+var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.get('/', function(req , response) {

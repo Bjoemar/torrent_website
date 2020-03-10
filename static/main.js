@@ -1,5 +1,5 @@
 
-var socket = io();
+
 
 if (window.innerWidth > 768) {
 	$('#web_head').load('/torrent_head');
@@ -7,6 +7,7 @@ if (window.innerWidth > 768) {
 	$('#web_head').load('/mobile_header');
 }
 
+f
 
 $('#web_body').load('/torrent_body');
 
@@ -39,10 +40,6 @@ $('#crawl_data').click(function(){
 
 
 
-socket.emit('new_user');
-socket.emit('get_latest');
-socket.emit('DailyTop10');
-socket.emit('loadgif');
 
 
 // parse()
