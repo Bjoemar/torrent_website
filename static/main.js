@@ -1,13 +1,10 @@
 
-
-
 if (window.innerWidth > 768) {
 	$('#web_head').load('/torrent_head');
 } else {
 	$('#web_head').load('/mobile_header');
 }
 
-f
 
 $('#web_body').load('/torrent_body');
 
