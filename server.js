@@ -156,8 +156,8 @@ app.get('/:category/type/:num/page/:number', function(req , response) {
 });
 
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
 
 var Movie = 0;
