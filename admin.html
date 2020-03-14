@@ -99,8 +99,8 @@
 			});
 			setTimeout(function(){
 				$('#admin_body').show();
-			},200)
-		},200)
+			},500)
+		},500)
 	});
 
 
@@ -208,9 +208,12 @@
 
 	})
 
-	$('.imageholder img').click(function(){
+	$(document).on('click' , '.imageholder img' , function(){
 		$(this).next().click();
 	})
+	// $('.imageholder img').click(function(){
+	// 	$(this).next().click();
+	// })
 
 
 	function readURL(input) {
