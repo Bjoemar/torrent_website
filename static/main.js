@@ -200,7 +200,7 @@ $.ajax({
 		{
 
 			$('#notice_list').append('<li class="post_row">'+
-											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<span class="num_pos"><i class="fas fa-caret-right"></i></span>'+
 											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
 											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
@@ -221,7 +221,7 @@ $.ajax({
 		{
 
 			$('#latest_update').append('<li class="post_row">'+
-											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<span class="num_pos"><i class="fas fa-caret-right"></i></span>'+
 											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
 											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+

@@ -109,53 +109,71 @@
 			$('.gif_holder').eq(2).html('<a target="_blank" href="//'+data[0]['link3']+'"><img src="'+data[0]['image_3']+'"></a>')
 		})
 
+		$.ajax({
+			url : '/daily_top_10',
+			method : 'get',
+			success:function(data){
+				var count = data.length;
+				$('#main_top_10').html('');
+			
+				for(i = 0; i < count; i++) 
+				{
 
-		socket.on('latest_update',function(db_data){
-			var count = db_data.length;
-			$('#latest_update').html('');
-			for(i = 0; i < count; i++) 
-			{
-
-				$('#latest_update').append('<li class="post_row">'+
-												'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
-												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-												'<span class="list_time">'+db_data[i]['data']+'</span>'+
-												'<div class="clear"></div>'+
-											'</li>')
-			}
-
-		});
-
-		socket.on('Notice' ,function(db_data){
-			var count = db_data.length;
-			$('#notice_list').html('');
-			for(i = 0; i < 5; i++) 
-			{
-
-				$('#notice_list').append('<li class="post_row">'+
-												'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
-												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-												'<span class="list_time">'+db_data[i]['data']+'</span>'+
-												'<div class="clear"></div>'+
-											'</li>')
+					$('#main_top_10').append('<li class="post_row">'+
+													'<span class="num_pos">'+(i + 1)+'</span>'+
+													'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+													'<span class="list_time">'+data[i]['data']+'</span>'+
+													'<div class="clear"></div>'+
+												'</li>')
+				}
 			}
 		})
 
-		socket.on('DailyTop10',function(db_data){
-			var count = db_data.length;
-			$('#main_top_10').html('');
-			for(i = 0; i < count; i++) 
-			{
 
-				$('#main_top_10').append('<li class="post_row">'+
-												'<span class="num_pos">'+(i + 1)+'</span>'+
-												'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-												'<span class="list_time">'+db_data[i]['data']+'</span>'+
-												'<div class="clear"></div>'+
-											'</li>')
+
+
+		$.ajax({
+			url : '/notice_json',
+			method : 'get',
+			success:function(data){
+				var count = data.length;
+				// console.log(data)
+				$('#notice_list').html('');
+			
+				for(i = 0; i < count; i++) 
+				{
+
+					$('#notice_list').append('<li class="post_row">'+
+													'<span class="num_pos"><i class="fas fa-caret-right"></i></span>'+
+													'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+													'<span class="list_time">'+data[i]['data']+'</span>'+
+													'<div class="clear"></div>'+
+												'</li>')
+				}
 			}
 		})
-		
+
+		$.ajax({
+			url : '/latest_json_data',
+			method : 'get',
+			success:function(data){
+				var count = data.length;
+				// console.log(data)
+				$('#latest_update').html('');
+			
+				for(i = 0; i < count; i++) 
+				{
+
+					$('#latest_update').append('<li class="post_row">'+
+													'<span class="num_pos"><i class="fas fa-caret-right"></i></span>'+
+													'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+													'<span class="list_time">'+data[i]['data']+'</span>'+
+													'<div class="clear"></div>'+
+												'</li>')
+				}
+			}
+		})
+
 
 
 
