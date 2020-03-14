@@ -2,15 +2,6 @@
 <html>
 <head>
 	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket = io();
-		socket.emit('new_user');
-		socket.emit('get_latest');
-		socket.emit('DailyTop10');
-		var url = window.location.pathname.split('/');
-		socket.emit('query' , url);
-		socket.emit('loadgif');
-	</script>
 	<title>MYTORRENT</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -44,6 +35,16 @@
 
 	<!-- <script type="text/javascript" src="/torrent/script"></script> -->
 	<script type="text/javascript">
+
+
+		var socket = io();
+
+		var url = window.location.pathname.split('/');
+
+		socket.emit('query' , url);
+		socket.emit('query_body' , url);
+
+		socket.emit('loadgif');
 
 
 		if (window.innerWidth > 768) {
@@ -98,10 +99,12 @@
 				$('td').find('a').addClass('btn-sm')
 			},100)
 			setTimeout(function(){
-
 				socket.emit('add_view',data[0]['_id']);
 			},3000)
 		})
+
+
+
 
 		socket.on('gif_data',function(data){
 			$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')

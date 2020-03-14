@@ -160,16 +160,16 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var Movie = 0;
 
 
-server.listen(server_port , server_ip_address , function(){
-	console.log('Listening on' + server_ip_address + ', port' + server_port);	
-})
-
-
-
-
-// server.listen(5000,function(){
-// 	console.log('Starting server on port5000');
+// server.listen(server_port , server_ip_address , function(){
+// 	console.log('Listening on' + server_ip_address + ', port' + server_port);	
 // })
+
+
+
+
+server.listen(5000,function(){
+	console.log('Starting server on port5000');
+})
 
 
 
@@ -579,7 +579,6 @@ io.on('connection',function(socket){
 			
 			dbo.collection('torrent').find({'torrent_id' : parseInt(torrent_id) , 'category' : torrent_category}).sort({_id : -1}).limit(1).toArray(function(err , main_result){
 
-
 				if (main_result.length > 0) {
 					if (err) throw err;
 					// console.log(main_result)
@@ -592,6 +591,29 @@ io.on('connection',function(socket){
 		});
 
 
+	})
+
+	socket.on('query_body',function(data){
+		var torrent_id = data[data.length - 1];
+		var torrent_category = data[data.length - 2];
+		var sort = {_id : -1}
+
+		MongoClient.connect(url ,{ useNewUrlParser : true ,  useUnifiedTopology: true } , function(err ,db){
+
+			var dbo = db.db("torrent");
+			
+			dbo.collection('torrent_body').find({'parent_id' : torrent_category+''+parseInt(torrent_id)}).sort({_id : -1}).limit(1).toArray(function(err , main_result){
+
+				if (main_result.length > 0) {
+					if (err) throw err;
+					// console.log(main_result)
+						socket.emit('view_file' ,main_result);					
+					}
+				db.close();
+
+			})
+
+		});
 	})
 
 	socket.on('getList',function(data){
@@ -957,20 +979,26 @@ function save_torrent(torrent,category,link,socket) {
 
 			getNextSequence(dbo, category , function(err, result){
 			    if(!err){
+
 			      var torrent_object = {
 			      	'link' : link,
 			      	'title' : torrent[0]['title'],
 			      	'size' : torrent[0]['size'],
 			      	'thumbnail' : torrent[0]['thumbnail'],
 			      	'type' :  torrent[0]['type'],
-			      	'image' : torrent[0]['torrent_conv'],
-			      	'structure' : torrent[0]['information'],
+			      
 			      	'views' : 0,
 			      	'category': category,
 			      	'like' : 0 ,
 			      	'dislike' : 0,
 			      	'data' : nowdate,	
 			      	'torrent_id' : result,
+			      }
+
+			      var torrent_body = {
+				      	'image' : torrent[0]['torrent_conv'],
+				      	'structure' : torrent[0]['information'],
+				      	'parent_id' : category+''+result,
 			      }
 
 
@@ -981,11 +1009,19 @@ function save_torrent(torrent,category,link,socket) {
 		      			sendLogs(socket,'Torrent ( <strong style="color : red">'+ torrent[0]['title']+'</strong> ) Is already Exsist !');
 		      			db.close();
 			      	} else {
-			      		sendLogs(socket,'Torrent ( <strong style="color : green">'+torrent[0]['title']+'</strong> ) has been saved.');	
+			      		
 			        		dbo.collection('torrent').insertOne(torrent_object, function(err, res){
 			        			if (err) throw err;
 			      		    db.close();
+
 			      		}); //End of insertOne
+
+	    		  		dbo.collection('torrent_body').insertOne(torrent_body, function(err, res){
+	    		  			if (err) throw err;
+	    				    db.close();    
+	    				}); //End of insertOne
+
+	    				sendLogs(socket,'Torrent ( <strong style="color : green">'+torrent[0]['title']+'</strong> ) has been saved.');	
 			      	}
 			      })
 
