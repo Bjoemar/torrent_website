@@ -31,8 +31,8 @@ var request = require('request').defaults({ encoding: null });;
 
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:27017/torrent";
-var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
+var url = "mongodb://localhost:27017/torrent";
+// var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.get('/AdultMovie_json', function(req , response) {
@@ -160,16 +160,16 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var Movie = 0;
 
 
-server.listen(server_port , server_ip_address , function(){
-	console.log('Listening on' + server_ip_address + ', port' + server_port);	
-})
-
-
-
-
-// server.listen(5000,function(){
-// 	console.log('Starting server on port5000');
+// server.listen(server_port , server_ip_address , function(){
+// 	console.log('Listening on' + server_ip_address + ', port' + server_port);	
 // })
+
+
+
+
+server.listen(5000,function(){
+	console.log('Starting server on port5000');
+})
 
 
 
@@ -354,7 +354,6 @@ app.post('/save_crawling_profile', function(req , response) {
 
 app.post('/save_modify_gif', function(req , response) {
    
-
 
 	MongoClient.connect(url ,{ useNewUrlParser : true ,  useUnifiedTopology: true } , function(err ,db){
 		var dbo = db.db("torrent");
@@ -869,18 +868,79 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 
 	} else {
 		socket.emit('web_crawl_done');
-		get_collection_db('Movies','jsons/Movies.json');
-		get_collection_db('AdultMovie','jsons/AdultMovie.json');
-		get_collection_db('Drama','jsons/Drama.json');
-		get_collection_db('Streaming','jsons/Streaming.json');
-		get_collection_db('Entertainment','jsons/Entertainment.json');
-		get_collection_db('Documentary','jsons/Documentary.json');
-		get_collection_db('Sports','jsons/Sports.json');
-		get_collection_db('Utility','jsons/Utility.json');
-		get_collection_db('Game','jsons/Game.json');
-		get_collection_db('Comic','jsons/Comic.json');
-		get_collection_db('Subtitle','jsons/Subtitle.json');
-		get_collection_db('Notice','jsons/Notice.json');
+
+		MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+			if (err) throw err;
+
+			var dbo = db.db('torrent');
+
+			var result_holder = [];
+
+			dbo.collection('torrent').find({}).limit(20).sort({_id : -1}).toArray(function(err , main_result){
+				if (main_result.length > 0) {
+					if (err) throw err;
+						arr_holder = [];
+						for (i = 0; i < main_result.length; i++)
+						{
+							var obj = {
+								'category' : main_result[i]['category'],
+								'torrent_id' : main_result[i]['torrent_id'],
+								'title' : main_result[i]['title'],
+								'data' : main_result[i]['data'],
+							}
+							arr_holder.push(obj);
+						}
+						
+						
+						let collection_name = JSON.stringify(arr_holder);
+						fs.writeFileSync('jsons/latest.json', collection_name);
+					}
+			})
+		})
+
+		if (category == 'Movies') {
+			get_collection_db('Movies','jsons/Movies.json');
+		} else if (category == 'AdultMovie') {
+			get_collection_db('AdultMovie','jsons/AdultMovie.json');
+		} else if (category == 'Drama') {
+			get_collection_db('Drama','jsons/Drama.json');
+		} else if (category == 'Streaming') {
+			get_collection_db('Streaming','jsons/Streaming.json');
+		} else if (category == 'Entertainment') {
+			get_collection_db('Entertainment','jsons/Entertainment.json');
+		} else if (category == 'Documentary') {
+			get_collection_db('Documentary','jsons/Documentary.json');
+		} else if (category == 'Sports') {
+			get_collection_db('Sports','jsons/Sports.json');
+		} else if (category == 'Utility') {
+			get_collection_db('Utility','jsons/Utility.json');
+		} else if (category == 'Game') {
+			get_collection_db('Game','jsons/Game.json');
+		} else if (category == 'Comic') {
+			get_collection_db('Comic','jsons/Comic.json');
+		} else if (category == 'Subtitle') {
+			get_collection_db('Subtitle','jsons/Subtitle.json');
+		} else if (category == 'Notice') {
+			get_collection_db('Notice','jsons/Notice.json');
+		} 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+
+
+
+
+
+
 	}
 
 }
