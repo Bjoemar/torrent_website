@@ -195,7 +195,19 @@ MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, f
 		if (main_result.length > 0) {
 			if (err) throw err;
 				arr_holder = [];
-				arr_holder.push(main_result);
+				for (i = 0; i < main_result.length; i++)
+				{
+					var obj = {
+						'category' : main_result[i]['category'],
+						'torrent_id' : main_result[i]['torrent_id'],
+						'title' : main_result[i]['title'],
+						'data' : main_result[i]['data'],
+					}
+					arr_holder.push(obj);
+				}
+				
+
+				
 				let collection_name = JSON.stringify(arr_holder);
 				fs.writeFileSync('jsons/daily_top_10.json', collection_name);
 
@@ -215,7 +227,18 @@ MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, f
 		if (main_result.length > 0) {
 			if (err) throw err;
 				arr_holder = [];
-				arr_holder.push(main_result);
+				for (i = 0; i < main_result.length; i++)
+				{
+					var obj = {
+						'category' : main_result[i]['category'],
+						'torrent_id' : main_result[i]['torrent_id'],
+						'title' : main_result[i]['title'],
+						'data' : main_result[i]['data'],
+					}
+					arr_holder.push(obj);
+				}
+				
+				
 				let collection_name = JSON.stringify(arr_holder);
 				fs.writeFileSync('jsons/latest.json', collection_name);
 			}
@@ -711,7 +734,19 @@ function get_collection_db(collection,path_name) {
 			if (main_result.length > 0) {
 				if (err) throw err;
 					arr_holder = [];
-					arr_holder.push(main_result);
+
+					for (i = 0; i < main_result.length; i++)
+					{
+						var obj = {
+							'category' : main_result[i]['category'],
+							'torrent_id' : main_result[i]['torrent_id'],
+							'title' : main_result[i]['title'],
+							'data' : main_result[i]['data'],
+						}
+						arr_holder.push(obj);
+					}
+			
+					
 					let collection_name = JSON.stringify(arr_holder);
 					fs.writeFileSync(path_name, collection_name);
 				}

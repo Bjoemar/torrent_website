@@ -93,7 +93,7 @@ $.ajax({
 	url : '/AdultMovie_json',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'adult_top_10','성인');
+		append_data(data,'adult_top_10','성인');
 	}
 })
 
@@ -101,7 +101,7 @@ $.ajax({
 	url : '/movie_json_data',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'movie_top_10','성인');
+		append_data(data,'movie_top_10','성인');
 	}
 })
 
@@ -109,7 +109,7 @@ $.ajax({
 	url : '/drama_json_data',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'drama_top_10','성인');
+		append_data(data,'drama_top_10','성인');
 	}
 })
 
@@ -118,7 +118,7 @@ $.ajax({
 	url : '/entertaiment_json_data',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'shows_top_10','성인');
+		append_data(data,'shows_top_10','성인');
 	}
 })
 
@@ -127,7 +127,7 @@ $.ajax({
 	url : '/documentary_json_data',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'docs_top_10','성인');
+		append_data(data,'docs_top_10','성인');
 	}
 })
 
@@ -136,7 +136,7 @@ $.ajax({
 	url : '/subtitle_json_data',
 	method : 'get',
 	success:function(data){
-		append_data(data[0],'archive_top_10','성인');
+		append_data(data,'archive_top_10','성인');
 	}
 })
 
@@ -146,7 +146,8 @@ $.ajax({
 	url : '/daily_top_10',
 	method : 'get',
 	success:function(data){
-		var count = data[0].length;
+		console.log(data)
+		var count = data.length;
 		$('#main_top_10').html('');
 	
 		for(i = 0; i < count; i++) 
@@ -154,8 +155,8 @@ $.ajax({
 
 			$('#main_top_10').append('<li class="post_row">'+
 											'<span class="num_pos">'+(i + 1)+'</span>'+
-											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
-											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
 										'</li>')
 		}
@@ -168,7 +169,7 @@ $.ajax({
 	url : '/daily_top_10',
 	method : 'get',
 	success:function(data){
-		var count = data[0].length;
+		var count = data.length;
 		$('#main_top_10').html('');
 	
 		for(i = 0; i < count; i++) 
@@ -176,8 +177,8 @@ $.ajax({
 
 			$('#main_top_10').append('<li class="post_row">'+
 											'<span class="num_pos">'+(i + 1)+'</span>'+
-											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
-											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
 										'</li>')
 		}
@@ -191,7 +192,7 @@ $.ajax({
 	url : '/notice_json',
 	method : 'get',
 	success:function(data){
-		var count = data[0].length;
+		var count = data.length;
 		// console.log(data)
 		$('#notice_list').html('');
 	
@@ -200,8 +201,8 @@ $.ajax({
 
 			$('#notice_list').append('<li class="post_row">'+
 											'<span class="num_pos">'+(i + 1)+'</span>'+
-											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
-											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
 										'</li>')
 		}
@@ -212,7 +213,7 @@ $.ajax({
 	url : '/latest_json_data',
 	method : 'get',
 	success:function(data){
-		var count = data[0].length;
+		var count = data.length;
 		// console.log(data)
 		$('#latest_update').html('');
 	
@@ -221,8 +222,8 @@ $.ajax({
 
 			$('#latest_update').append('<li class="post_row">'+
 											'<span class="num_pos">'+(i + 1)+'</span>'+
-											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
-											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'">'+data[i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
 										'</li>')
 		}
