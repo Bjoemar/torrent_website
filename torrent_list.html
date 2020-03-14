@@ -363,16 +363,16 @@
 	socket.on('torrent_total',function(data){
 		var web_path_name = window.location.pathname.split('/')[1];
 		var web_path_len = window.location.pathname.split('/').length;
-		// if (res == 'Streaming') {
-		// 	if (web_path_len == 2) {
-		// 		var comparer = 1;
-		// 	} else {
-		// 		var comparer = window.location.pathname.split('/')[web_path_len - 1];
-		// 	}
-		// } else {
-			var comparer = window.location.pathname.split('/')[web_path_len - 1];
+		if (res == 'Streaming') {
+			if (web_path_len == 2) {
+				var comparer = 1;
+			} else {
+				var comparer = window.location.pathname.split('/')[web_path_len - 1];
+			}
+		// // } else {
+		// 	var comparer = window.location.pathname.split('/')[web_path_len - 1];
 
-		// }
+		// // }
 
 		console.log(comparer)
 

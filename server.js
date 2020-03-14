@@ -31,8 +31,8 @@ var request = require('request').defaults({ encoding: null });;
 
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:27017/torrent";
-var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
+var url = "mongodb://localhost:27017/torrent";
+// var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.get('/gif_list', function(req , response) {
@@ -164,16 +164,16 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 // var Movie = 0;
 
 
-server.listen(server_port , server_ip_address , function(){
-	console.log('Listening on' + server_ip_address + ', port' + server_port);	
-})
-
-
-
-
-// server.listen(5000,function(){
-// 	console.log('Starting server on port5000');
+// server.listen(server_port , server_ip_address , function(){
+// 	console.log('Listening on' + server_ip_address + ', port' + server_port);	
 // })
+
+
+
+
+server.listen(5000,function(){
+	console.log('Starting server on port5000');
+})
 
 
 
