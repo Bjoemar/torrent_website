@@ -345,11 +345,19 @@
 
 	})
 
-	socket.on('gif_data',function(data){
-		$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')
-		$('.gif_holder').eq(1).html('<a target="_blank" href="//'+data[0]['link2']+'"><img src="'+data[0]['image_2']+'"></a>')
-		$('.gif_holder').eq(2).html('<a target="_blank" href="//'+data[0]['link3']+'"><img src="'+data[0]['image_3']+'"></a>')
+
+
+
+	$.ajax({
+		url : '/gif_list',
+		method : 'get',
+		success:function(data){
+			$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')
+				$('.gif_holder').eq(1).html('<a target="_blank" href="//'+data[0]['link2']+'"><img src="'+data[0]['image_2']+'"></a>')
+				$('.gif_holder').eq(2).html('<a target="_blank" href="//'+data[0]['link3']+'"><img src="'+data[0]['image_3']+'"></a>')
+		}
 	})
+
 
 
 	socket.on('torrent_total',function(data){

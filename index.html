@@ -2,13 +2,7 @@
 <html>
 <head>
 	<script src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript">
-		var socket = io();
-		socket.emit('new_user');
-		socket.emit('get_latest');
-		socket.emit('DailyTop10');
-		socket.emit('loadgif');
-	</script>
+
 	<title>MYTORRENT</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -41,6 +35,10 @@
 </body>
 
 <script type="text/javascript">
+
+	var socket = io();
+	socket.emit('loadgif');
+
 	
 	function file_download(link) {
 		location.href = link;

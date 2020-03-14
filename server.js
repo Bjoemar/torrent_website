@@ -35,6 +35,10 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
+app.get('/gif_list', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/gif.json'));
+
+});
 app.get('/AdultMovie_json', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/AdultMovie.json'));
 
@@ -246,6 +250,26 @@ MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, f
 })
 
 
+MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+	if (err) throw err;
+
+	var dbo = db.db('torrent');
+
+	var result_holder = [];
+
+	dbo.collection('gif_container').find().limit(1).toArray(function(err , main_result){
+		if (main_result.length > 0) {
+			if (err) throw err;
+				arr_holder = [];
+
+				let collection_name = JSON.stringify(main_result);
+				fs.writeFileSync('jsons/gif.json', collection_name);
+			}
+	})
+})
+
+
+
 
 
 
@@ -380,12 +404,17 @@ app.post('/save_modify_gif', function(req , response) {
 		};
 
 
+		let collection_name = JSON.stringify(gif_data);
+		fs.writeFileSync('jsons/gif.json', collection_name);
+		
 		var dbo = db.db("torrent");
 
   		dbo.collection('gif_container').insertOne(gif_data, function(err, res){
   			if (err) throw err;
 		    db.close();
 		}); //End of insertOne
+
+
 
 		response.redirect('/admin');
 
@@ -445,22 +474,22 @@ io.on('connection',function(socket){
 
 
 
-	socket.on('loadgif',function(){
-		MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
-			if (err) throw err;
+	// socket.on('loadgif',function(){
+	// 	MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+	// 		if (err) throw err;
 
-			var dbo = db.db('torrent');
+	// 		var dbo = db.db('torrent');
 
-			var result_holder = [];
+	// 		var result_holder = [];
 
-			dbo.collection('gif_container').find().limit(1).toArray(function(err , main_result){
-				if (main_result.length > 0) {
-					if (err) throw err;
-						socket.emit('gif_data' , main_result);
-					}
-			})
-		})
-	})
+	// 		dbo.collection('gif_container').find().limit(1).toArray(function(err , main_result){
+	// 			if (main_result.length > 0) {
+	// 				if (err) throw err;
+	// 					socket.emit('gif_data' , main_result);
+	// 				}
+	// 		})
+	// 	})
+	// })
 
 	socket.on('add_view',function(data){
 
