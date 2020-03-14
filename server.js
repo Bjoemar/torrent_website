@@ -35,8 +35,11 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
+app.get('/AdultMovie_json', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/AdultMovie.json'));
 
-
+});
+ 
 app.get('/movie_json_data', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/Movies.json'));
 });
@@ -57,18 +60,21 @@ app.get('/subtitle_json_data', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/Subtitle.json'));
 });
 
+app.get('/daily_top_10', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/daily_top_10.json'));
+});
+
 app.get('/latest_json_data', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/latest.json'));
 });
 
-
-
+app.get('/notice_json', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/Notice.json'));
+});
 
 app.get('/', function(req , response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
-
-
 
 app.get('/torrent_json', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/test.json'));
@@ -78,11 +84,9 @@ app.get('/torrent_head', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/header.html'));
 });
 
-
 app.get('/mobile_header', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/mobile_header.html'));
 });
-
 
 app.get('/torrent_body', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/home.html'));
@@ -92,7 +96,6 @@ app.get('/view_torrent', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/view_content.html'));
 });
 
-
 app.get('/view_list', function(req , response) {
     response.sendFile(path.join(__dirname, '/partials/web/view_list.html'));
 });
@@ -101,19 +104,13 @@ app.get('/crawling_codes', function(req , response) {
     response.sendFile(path.join(__dirname, 'partials/web/admin_partials/crawling.html'));
 });
 
-
 app.get('/web_content_modify', function(req , response) {
     response.sendFile(path.join(__dirname, 'partials/web/admin_partials/webiste_content.html'));
 });
 
-
-
 app.get('/web_site_data', function(req , response) {
     response.sendFile(path.join(__dirname, 'partials/web/admin_partials/web_site_data.html'));
 });
-
-
-
 
 app.get('/crawl_table', function(req , response) {
     response.sendFile(path.join(__dirname, 'partials/web/admin_partials/crawlingtable.html'));
@@ -163,7 +160,6 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var Movie = 0;
 
 
-
 server.listen(server_port , server_ip_address , function(){
 	console.log('Listening on' + server_ip_address + ', port' + server_port);	
 })
@@ -189,6 +185,43 @@ get_collection_db('Game','jsons/Game.json');
 get_collection_db('Comic','jsons/Comic.json');
 get_collection_db('Subtitle','jsons/Subtitle.json');
 get_collection_db('Notice','jsons/Notice.json');
+
+
+MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+	if (err) throw err;
+
+	var dbo = db.db('torrent');
+	dbo.collection('torrent').find({}).limit(10).sort({'views' : -1}).toArray(function(err , main_result){
+		if (main_result.length > 0) {
+			if (err) throw err;
+				arr_holder = [];
+				arr_holder.push(main_result);
+				let collection_name = JSON.stringify(arr_holder);
+				fs.writeFileSync('jsons/daily_top_10.json', collection_name);
+
+			}
+	})
+})
+
+
+MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+	if (err) throw err;
+
+	var dbo = db.db('torrent');
+
+	var result_holder = [];
+
+	dbo.collection('torrent').find({}).limit(20).sort({_id : -1}).toArray(function(err , main_result){
+		if (main_result.length > 0) {
+			if (err) throw err;
+				arr_holder = [];
+				arr_holder.push(main_result);
+				let collection_name = JSON.stringify(arr_holder);
+				fs.writeFileSync('jsons/latest.json', collection_name);
+			}
+	})
+})
+
 
 
 
@@ -386,44 +419,8 @@ let year = date_ob.getFullYear();
 io.on('connection',function(socket){
 
 
-	socket.on('get_latest',function(){
-
-		MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
-			if (err) throw err;
-
-			var dbo = db.db('torrent');
-
-			var result_holder = [];
-
-			dbo.collection('torrent').find({}).limit(20).sort({_id : -1}).toArray(function(err , main_result){
-				if (main_result.length > 0) {
-					if (err) throw err;
-						socket.emit('latest_update' , main_result);
-					}
-			})
-		})
-	})
 
 
-	socket.on('DailyTop10',function(){
-
-		MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
-			if (err) throw err;
-
-			var dbo = db.db('torrent');
-
-			var result_holder = [];
-
-			dbo.collection('torrent').find({}).limit(10).sort({'views' : -1}).toArray(function(err , main_result){
-				if (main_result.length > 0) {
-					if (err) throw err;
-						socket.emit('DailyTop10' , main_result);
-					}
-			})
-		})
-
-
-	})
 
 
 	socket.on('loadgif',function(){
@@ -701,7 +698,6 @@ io.on('connection',function(socket){
 // FUNTIONS
 
 function get_collection_db(collection,path_name) {
-	console.log('JOEMAR')
 	MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
 		if (err) throw err;
 
@@ -815,7 +811,6 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 				torrent.push(torrent_obj);
 				setTimeout(function(){
 					if (torrent != []) {
-						console.log(torrent[0])
 						save_torrent(torrent,category,link,socket);  
 					} else {
 						sendLogs(socket, 'Torrent Number '+max +'is not saved!');	

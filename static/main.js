@@ -41,7 +41,8 @@ $('#crawl_data').click(function(){
 
 // parse()
 
-socket.emit('load_adult_10');
+
+socket.emit('loadgif')
 
 
 $('#crawl').click(function(){
@@ -86,6 +87,15 @@ $(document).ready(function(){
 	},500);
 });
 
+
+
+$.ajax({
+	url : '/AdultMovie_json',
+	method : 'get',
+	success:function(data){
+		append_data(data[0],'adult_top_10','성인');
+	}
+})
 
 $.ajax({
 	url : '/movie_json_data',
@@ -132,46 +142,95 @@ $.ajax({
 
 
 
-
-
-
-// var movie_json = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
-
-// socket.on('Movies',function(data){
-// 	console.table(data)
-
-// 	append_data(data,'movie_top_10','성인');
-// })
-
-// socket.on('AdultMovie',function(data){
-// 	append_data(data,'adult_top_10','영화');
-
-// })
-
-// socket.on('Drama',function(data){
+$.ajax({
+	url : '/daily_top_10',
+	method : 'get',
+	success:function(data){
+		var count = data[0].length;
+		$('#main_top_10').html('');
 	
-// 	append_data(data,'drama_top_10','TV드라마');
+		for(i = 0; i < count; i++) 
+		{
 
-// })
-
-// socket.on('Entertainment',function(data){
-// 	append_data(data,'shows_top_10','TV예능');
-// })
-
-
-// socket.on('Documentary',function(data){
-// 	append_data(data,'docs_top_10','다큐/시사');
-// })
-
-
-// socket.on('Subtitle',function(data){
-// 	append_data(data,'archive_top_10','자막자료실');
-// });
+			$('#main_top_10').append('<li class="post_row">'+
+											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<div class="clear"></div>'+
+										'</li>')
+		}
+	}
+})
 
 
-socket.on('main_top_10',function(data){
-	append_data(data,'main_top_10','영화');
-});
+
+$.ajax({
+	url : '/daily_top_10',
+	method : 'get',
+	success:function(data){
+		var count = data[0].length;
+		$('#main_top_10').html('');
+	
+		for(i = 0; i < count; i++) 
+		{
+
+			$('#main_top_10').append('<li class="post_row">'+
+											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<div class="clear"></div>'+
+										'</li>')
+		}
+	}
+})
+
+
+
+
+$.ajax({
+	url : '/notice_json',
+	method : 'get',
+	success:function(data){
+		var count = data[0].length;
+		// console.log(data)
+		$('#notice_list').html('');
+	
+		for(i = 0; i < count; i++) 
+		{
+
+			$('#notice_list').append('<li class="post_row">'+
+											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<div class="clear"></div>'+
+										'</li>')
+		}
+	}
+})
+
+$.ajax({
+	url : '/latest_json_data',
+	method : 'get',
+	success:function(data){
+		var count = data[0].length;
+		// console.log(data)
+		$('#latest_update').html('');
+	
+		for(i = 0; i < count; i++) 
+		{
+
+			$('#latest_update').append('<li class="post_row">'+
+											'<span class="num_pos">'+(i + 1)+'</span>'+
+											'<label class="post_title"><a target="_blank" href="/post/'+data[0][i]['category']+'/'+data[0][i]['torrent_id']+'">'+data[0][i]['title']+'</a></label>'+
+											'<span class="list_time">'+data[0][i]['data']+'</span>'+
+											'<div class="clear"></div>'+
+										'</li>')
+		}
+	}
+})
+
+
+
 
 socket.on('gif_data',function(data){
 	$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')
@@ -180,51 +239,7 @@ socket.on('gif_data',function(data){
 })
 
 
-socket.on('latest_update',function(db_data){
-	var count = db_data.length;
-	$('#latest_update').html('');
-	for(i = 0; i < count; i++) 
-	{
 
-		$('#latest_update').append('<li class="post_row">'+
-										'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
-										'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-										'<span class="list_time">'+db_data[i]['data']+'</span>'+
-										'<div class="clear"></div>'+
-									'</li>')
-	}
-
-});
-
-socket.on('Notice' ,function(db_data){
-	var count = db_data.length;
-	$('#notice_list').html('');
-	for(i = 0; i < 5; i++) 
-	{
-
-		$('#notice_list').append('<li class="post_row">'+
-										'<span class="num_pos_a"><i class="fas fa-caret-right"></i></span>'+
-										'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-										'<span class="list_time">'+db_data[i]['data']+'</span>'+
-										'<div class="clear"></div>'+
-									'</li>')
-	}
-})
-
-socket.on('DailyTop10',function(db_data){
-	var count = db_data.length;
-	$('#main_top_10').html('');
-	for(i = 0; i < count; i++) 
-	{
-
-		$('#main_top_10').append('<li class="post_row">'+
-										'<span class="num_pos">'+(i + 1)+'</span>'+
-										'<label class="post_title"><a target="_blank" href="/post/'+db_data[i]['category']+'/'+db_data[i]['torrent_id']+'">'+db_data[i]['title']+'</a></label>'+
-										'<span class="list_time">'+db_data[i]['data']+'</span>'+
-										'<div class="clear"></div>'+
-									'</li>')
-	}
-})
 
 function append_data(db_data,id_name,cat) {
 	// $('.categories').html(cat);
