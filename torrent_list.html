@@ -261,22 +261,25 @@
 
 		$('.categories').html($('.active_menu a').html());
 
-		if (type == null) {
-			$('.all_content').addClass('active')
-		} else if (type == 1) {
-			$('.first_content').addClass('active')
-		} else if (type == 2) {
-			$('.second_content').addClass('active')
-		} else if (type == 3) {
-			$('.third_content').addClass('active')
-		} else if (type == 4) {
-			$('.fourt_content').addClass('active')
-		} else if (type == 5) {
-			$('.fifth_content').addClass('active')
-		} else if (type == 6) {
-			$('.last_content').addClass('active')
-		}
+		setTimeout(function(){
 
+			if (type == null) {
+				$('.all_content').addClass('active')
+			} else if (type == 1) {
+				$('.first_content').addClass('active')
+			} else if (type == 2) {
+				$('.second_content').addClass('active')
+			} else if (type == 3) {
+				$('.third_content').addClass('active')
+			} else if (type == 4) {
+				$('.fourt_content').addClass('active')
+			} else if (type == 5) {
+				$('.fifth_content').addClass('active')
+			} else if (type == 6) {
+				$('.last_content').addClass('active')
+			}
+
+		},1500)
 
 
 	},1000)
