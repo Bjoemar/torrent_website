@@ -1010,9 +1010,9 @@ function save_torrent(torrent,category,link,socket) {
 		      			db.close();
 			      	} else {
 			      		
-			        		dbo.collection('torrent').insertOne(torrent_object, function(err, res){
+			        	dbo.collection('torrent').insertOne(torrent_object, function(err, res){
 			        			if (err) throw err;
-			      		    db.close();
+			      		    // db.close();
 
 			      		}); //End of insertOne
 
