@@ -2,33 +2,7 @@
 <html>
 <head>
 	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket = io();
 
-		
-		socket.emit('new_user');
-		socket.emit('getList',{'category' : res , 'page' : page , 'type' : type});
-		socket.emit('loadgif');
-		socket.emit('get_latest');
-		socket.emit('DailyTop10');
-
-		var url = window.location.pathname.split('/');
-		var link_len = url.length - 1;
-		var res = url[1];
-
-
-		if (link_len < 2) {
-			var page = 1;
-		} else if(link_len == 5) {
-			var type = url[3];
-			var page = url[link_len];
-		} else {
-			var type = null;
-
-			var page = url[link_len];
-		}
-
-	</script>
 	<title>TORRENT LIST</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -61,6 +35,29 @@
 
 <script type="text/javascript">
 
+	var socket = io();
+
+
+
+	var url = window.location.pathname.split('/');
+	var link_len = url.length - 1;
+	var res = url[1];
+
+
+	if (link_len < 2) {
+		var page = 1;
+	} else if(link_len == 5) {
+		var type = url[3];
+		var page = url[link_len];
+	} else {
+		var type = null;
+
+		var page = url[link_len];
+	}
+
+
+	socket.emit('getList',{'category' : res , 'page' : page , 'type' : type});
+	// socket.emit('loadgif');
 
 
 
@@ -356,16 +353,18 @@
 	socket.on('torrent_total',function(data){
 		var web_path_name = window.location.pathname.split('/')[1];
 		var web_path_len = window.location.pathname.split('/').length;
-		if (res == 'Streaming') {
-			if (web_path_len == 2) {
-				var comparer = 1;
-			} else {
-				var comparer = window.location.pathname.split('/')[web_path_len - 1];
-			}
-		} else {
-			var comparer = window.location.pathname.split('/')[web_path_len];
+		// if (res == 'Streaming') {
+		// 	if (web_path_len == 2) {
+		// 		var comparer = 1;
+		// 	} else {
+		// 		var comparer = window.location.pathname.split('/')[web_path_len - 1];
+		// 	}
+		// } else {
+			var comparer = window.location.pathname.split('/')[web_path_len - 1];
 
-		}
+		// }
+
+		console.log(comparer)
 
 		if (comparer) {
 			var start = (Math.ceil(comparer / 5) * 5) - 4;

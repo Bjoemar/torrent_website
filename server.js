@@ -614,12 +614,9 @@ io.on('connection',function(socket){
 				var query = {'category' : data.category}	
 			}
 
-			// console.log(query)
-
-			
 			dbo.collection('torrent').find(query).sort({_id : -1}).skip(skip).limit(20).toArray(function(err , main_result){
 
-				if (main_result.length > 0) {
+				if (main_result.length > 0){
 					if (err) throw err;
 
 					var arr_holder = [];
@@ -627,15 +624,17 @@ io.on('connection',function(socket){
 					for(i = 0; i < main_result.length; i++)
 					{
 						var obj = {
-							'category' : main_result[0]['category'],
-							'torrent_id' : main_result[0]['torrent_id'],
-							'thumbnail' : main_result[0]['thumbnail'],
-							'title' : main_result[0]['title'],
-							'size' : main_result[0]['size'],
+							'category' : main_result[i]['category'],
+							'torrent_id' : main_result[i]['torrent_id'],
+							'thumbnail' : main_result[i]['thumbnail'],
+							'title' : main_result[i]['title'],
+							'size' : main_result[i]['size'],
 						}
 
 						arr_holder.push(obj)
 					}
+
+					console.log('JOEMAR')
 					socket.emit('list_result' ,arr_holder);					
 				}
 				db.close();
