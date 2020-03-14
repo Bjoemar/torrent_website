@@ -761,6 +761,16 @@ tfoot {
 		
 	}
 
+	.post_title {
+	   font-size: 10px;
+
+	}
+
+	.view_torrent_header h1 {
+	    font-size: 13px;
+	    padding: 10px;
+	}
+
 	.list_holder tbody td {
 	    font-size: 5px;
 	    padding: 3px;
