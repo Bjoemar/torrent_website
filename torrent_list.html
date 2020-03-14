@@ -36,7 +36,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
+
 
 		$.ajax({
 			url : '/daily_top_10',
@@ -288,7 +288,6 @@
 
 
 	socket.on('list_result', function(data){
-
 		var len = data.length;
 		if (data[0]['category'] == "AdultMovie") {
 			$('.table_data').show();
@@ -337,7 +336,7 @@
 				$('.list_result_holder').append('<tr>'+
 								'<td class="list_id">'+data[x]['torrent_id']+'</td>'+
 								'<td class="list_title"><a target="_blank" href="/post/'+data[x]['category']+'/'+data[x]['torrent_id']+'"><label>'+data[x]['title']+'</label></a></td>'+
-								'<td class="list_view">'+data[x]['views']+'</td>'+
+								'<td class="list_view">'+data[x]['size']+'</td>'+
 								'<td class="list_date">'+data[x]['data']+'</td>'+
 							'</tr>');
 			}

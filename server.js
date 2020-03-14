@@ -651,6 +651,7 @@ io.on('connection',function(socket){
 							'thumbnail' : main_result[i]['thumbnail'],
 							'title' : main_result[i]['title'],
 							'size' : main_result[i]['size'],
+							'data' : main_result[i]['data']
 						}
 
 						arr_holder.push(obj)
