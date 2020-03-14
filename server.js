@@ -607,7 +607,7 @@ io.on('connection',function(socket){
 				if (main_result.length > 0) {
 					if (err) throw err;
 					// console.log(main_result)
-						socket.emit('view_file' ,main_result);					
+						socket.emit('view_file_body' ,main_result);					
 					}
 				db.close();
 

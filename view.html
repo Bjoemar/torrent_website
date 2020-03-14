@@ -64,18 +64,7 @@
 		$('#view_body').load('/view_torrent');
 
 
-
-		socket.on('view_file',function(data){
-			setTimeout(function(){
-				$('.'+data[0]['category']).addClass('active_menu');
-				$('.categories').html($('.active_menu a').html());
-			},100)
-
-			$('#tor_viewer').attr('src', data[0]['link'])
-			$('.view_torrent_header h1').html(data[0]['title']);
-			$('.head_list .views span').html(data[0]['views']);
-			$('.head_list .time span').html(data[0]['data']);
-
+		socket.on('view_file_body',function(data){
 			var structure_len = data[0]['structure'].length;
 
 			// if (structure_len > 0) {
@@ -98,6 +87,19 @@
 				$('td').find('a').eq(1).html('<i class="fas fa-magnet"></i> Magnet Link')
 				$('td').find('a').addClass('btn-sm')
 			},100)
+		})
+		socket.on('view_file',function(data){
+			setTimeout(function(){
+				$('.'+data[0]['category']).addClass('active_menu');
+				$('.categories').html($('.active_menu a').html());
+			},100)
+
+			$('#tor_viewer').attr('src', data[0]['link'])
+			$('.view_torrent_header h1').html(data[0]['title']);
+			$('.head_list .views span').html(data[0]['views']);
+			$('.head_list .time span').html(data[0]['data']);
+
+
 			setTimeout(function(){
 				socket.emit('add_view',data[0]['_id']);
 			},3000)
