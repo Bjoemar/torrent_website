@@ -761,9 +761,17 @@ tfoot {
 		
 	}
 
+	.list_holder tbody td {
+	    font-size: 5px;
+	    padding: 3px;
+	    font-size: 10px;
+	    border-bottom: 1px solid #eee;
+	}
+
+
 	.list_holder thead td {
 	    padding: 8px;
-	    font-size: 14px;
+	    font-size: 10px;
 	}
 
 	.active_menu a{
