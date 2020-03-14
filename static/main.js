@@ -85,7 +85,7 @@ $(document).ready(function(){
 			
 		},200)
 	},500);
-});
+
 
 
 
@@ -232,6 +232,7 @@ $.ajax({
 
 
 
+});
 
 socket.on('gif_data',function(data){
 	$('.gif_holder').eq(0).html('<a target="_blank" href="//'+data[0]['link1']+'"><img src="'+data[0]['image_1']+'"></a>')
