@@ -761,6 +761,11 @@ tfoot {
 		
 	}
 
+	.list_holder thead td {
+	    padding: 8px;
+	    font-size: 14px;
+	}
+
 	.active_menu a{
 		color: #0072cf !important;
 		font-weight: 900;
@@ -781,7 +786,7 @@ tfoot {
 
 	}
 	.list_title label {
-		width: 250px;
+		width: 170px;
 		text-overflow: ellipsis;
 		text-align: left;
 		white-space: nowrap;
