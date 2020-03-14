@@ -31,8 +31,8 @@ var request = require('request').defaults({ encoding: null });;
 
 var mongo = require('mongodb');
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/torrent";
-// var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
+// var url = "mongodb://localhost:27017/torrent";
+var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.get('/AdultMovie_json', function(req , response) {
@@ -160,16 +160,16 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 var Movie = 0;
 
 
-// server.listen(server_port , server_ip_address , function(){
-// 	console.log('Listening on' + server_ip_address + ', port' + server_port);	
-// })
-
-
-
-
-server.listen(5000,function(){
-	console.log('Starting server on port5000');
+server.listen(server_port , server_ip_address , function(){
+	console.log('Listening on' + server_ip_address + ', port' + server_port);	
 })
+
+
+
+
+// server.listen(5000,function(){
+// 	console.log('Starting server on port5000');
+// })
 
 
 
@@ -622,7 +622,21 @@ io.on('connection',function(socket){
 				if (main_result.length > 0) {
 					if (err) throw err;
 
-						socket.emit('list_result' ,main_result);					
+					var arr_holder = [];
+
+					for(i = 0; i < main_result.length; i++)
+					{
+						var obj = {
+							'category' : main_result[0]['category'],
+							'torrent_id' : main_result[0]['torrent_id'],
+							'thumbnail' : main_result[0]['thumbnail'],
+							'title' : main_result[0]['title'],
+							'size' : main_result[0]['size'],
+						}
+
+						arr_holder.push(obj)
+					}
+					socket.emit('list_result' ,arr_holder);					
 				}
 				db.close();
 
@@ -925,21 +939,6 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 		} 
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-
-
-
-
-
 
 	}
 
