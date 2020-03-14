@@ -2,7 +2,7 @@
 <html  lang="ko">
 <head>
 	<script src="/socket.io/socket.io.js"></script>
-	<title>MYTORRENT</title>
+	<title>토렌트집</title>
 
 	<meta name="author" content="토렌트집">
 
@@ -109,7 +109,7 @@
 
 			if (!meta_image) {
 
-					$('head').append('<meta property="og:image" content="'+data[0]['image'][0]+'">');
+					$('head').append('<meta property="og:image" content="https://torrentzip1.com/'+data[0]['image'][0]+'">');
 					meta_image = true;
 			}
 			for(x = 0; x < image_len; x++) {
@@ -138,7 +138,7 @@
 
 			if (!meta_image) {
 
-					$('head').append('<meta property="og:image" content="'+data[0]['thumbnail']+'">');
+					$('head').append('<meta property="og:image" content="https://torrentzip1.com/'+data[0]['thumbnail']+'">');
 					meta_image = true;
 			}
 
