@@ -87,11 +87,18 @@
 				$('td').find('a').eq(1).html('<i class="fas fa-magnet"></i> Magnet Link')
 				$('td').find('a').addClass('btn-sm')
 			},100)
-		})
+		});
+
+
+
+
 		socket.on('view_file',function(data){
 			setTimeout(function(){
 				$('.'+data[0]['category']).addClass('active_menu');
 				$('.categories').html($('.active_menu a').html());
+				setTimeout(function(){
+					$('.view_header').show();
+				},400);
 			},100)
 
 			$('#tor_viewer').attr('src', data[0]['link'])
@@ -118,9 +125,7 @@
 
 
 		$(document).ready(function(){
-			setTimeout(function(){
-				$('.view_header').show();
-			},100);
+
 
 			$.ajax({
 				url : '/daily_top_10',
