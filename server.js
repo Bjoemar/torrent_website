@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
+app.use(express.static('./'));
 var fs = require('fs');
 var request = require('request').defaults({ encoding: null });;
 
@@ -406,7 +407,7 @@ app.post('/save_modify_gif', function(req , response) {
 
 		let collection_name = JSON.stringify(gif_data);
 		fs.writeFileSync('jsons/gif.json', collection_name);
-		
+
 		var dbo = db.db("torrent");
 
   		dbo.collection('gif_container').insertOne(gif_data, function(err, res){
