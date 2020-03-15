@@ -193,6 +193,7 @@ $.ajax({
 	url : '/feature_list',
 	method : 'get',
 	success:function(data){
+		console.log(data)
 		var count = data.length;
 		$('.feature_slider').html('');
 	
@@ -200,7 +201,7 @@ $.ajax({
 		{
 
 			$('.feature_slider').append('<div class="slider_content">'+
-							'<a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'"><img src="'+data[i]['thumbnail']['url']+'"></a>'+
+							'<a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'"><img src="'+data[i]['thumbnail']['secure_url']+'"></a>'+
 							'<p class="post_title">'+data[i]['title']+'</p><br>'+
 							'<span>Movies</span>'+
 						'</div>')
