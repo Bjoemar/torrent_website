@@ -82,6 +82,28 @@ $(document).ready(function(){
 		setTimeout(function(){
 			$('.animated_slide').css({'opacity' : '1'})
 
+			$.ajax({
+				url : '/feature_list',
+				method : 'get',
+				success:function(data){
+					// console.log(data)
+					var count = data.length;
+					$('.feature_slider').html('');
+				
+					for(i = 0; i < count; i++) 
+					{
+
+						$('.feature_slider').append('<div class="slider_content">'+
+										'<a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'"><img src="'+data[i]['thumbnail']['secure_url']+'"></a>'+
+										'<p class="post_title">'+data[i]['title']+'</p><br>'+
+										'<span>Movies</span>'+
+									'</div>')
+					}
+				}
+			})
+
+
+
 			setTimeout(function(){
 				$('.slider').css('height' , $('.slick-track').height() * 1.2);
 			},1500);
@@ -188,26 +210,6 @@ $.ajax({
 })
 
 
-
-$.ajax({
-	url : '/feature_list',
-	method : 'get',
-	success:function(data){
-		// console.log(data)
-		var count = data.length;
-		$('.feature_slider').html('');
-	
-		for(i = 0; i < count; i++) 
-		{
-
-			$('.feature_slider').append('<div class="slider_content">'+
-							'<a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'"><img src="'+data[i]['thumbnail']['secure_url']+'"></a>'+
-							'<p class="post_title">'+data[i]['title']+'</p><br>'+
-							'<span>Movies</span>'+
-						'</div>')
-		}
-	}
-})
 
 
 
