@@ -193,7 +193,7 @@ $.ajax({
 	url : '/feature_list',
 	method : 'get',
 	success:function(data){
-		console.log(data)
+		// console.log(data)
 		var count = data.length;
 		$('.feature_slider').html('');
 	
