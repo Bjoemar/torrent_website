@@ -11,6 +11,14 @@ var moment = require('moment');
 require('moment-timezone');
 moment.tz('Asia/Tokyo');
 var crypto = require('crypto');
+var cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dv5ki1m4h', 
+  api_key: '582234747534997', 
+  api_secret: '-bzj1fgOz0FfSL8bVGrECzcBrY0' 
+});
+
 
 // var request = require("request");
 
@@ -26,7 +34,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-app.use(express.static('./'));
+// app.use(express.static('./'));
 var fs = require('fs');
 var request = require('request').defaults({ encoding: null });;
 
@@ -35,6 +43,11 @@ var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/torrent";
 var url = "mongodb+srv://joemar12:joemar12@torrent-oh6ud.mongodb.net/test?retryWrites=true&w=majority";
 
+
+app.get('/feature_list', function(req , response) {
+    response.sendFile(path.join(__dirname, 'jsons/feature.json'));
+
+});
 
 app.get('/gif_list', function(req , response) {
     response.sendFile(path.join(__dirname, 'jsons/gif.json'));
@@ -246,6 +259,36 @@ MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, f
 				
 				let collection_name = JSON.stringify(arr_holder);
 				fs.writeFileSync('jsons/latest.json', collection_name);
+			}
+	})
+})
+
+
+MongoClient.connect(url, { useNewUrlParser: true ,  useUnifiedTopology: true}, function(err , db){
+	if (err) throw err;
+
+	var dbo = db.db('torrent');
+
+	var result_holder = [];
+
+	dbo.collection('torrent').find({}).limit(20).sort({_id : -1}).toArray(function(err , main_result){
+		if (main_result.length > 0) {
+			if (err) throw err;
+				// arr_holder = [];
+				// for (i = 0; i < main_result.length; i++)
+				// {
+				// 	var obj = {
+				// 		'category' : main_result[i]['category'],
+				// 		'torrent_id' : main_result[i]['torrent_id'],
+				// 		'title' : main_result[i]['title'],
+				// 		'data' : main_result[i]['data'],
+				// 	}
+				// 	arr_holder.push(obj);
+				// }
+				
+				
+				let collection_name = JSON.stringify(main_result);
+				fs.writeFileSync('jsons/feature.json', collection_name);
 			}
 	})
 })
@@ -829,12 +872,12 @@ function parse_page(torrent,container_link,socket,link,start,first_code,second_c
 	} else  {
 		var newurl = link+start
 	}
+
 	request(newurl,function(err,res,body) {
 		if (err) {
 			sendLogs(socket,'Something wrong. The data is '+err[0]);	
 		} else {
 			let $ = cheerio.load(body);
-
 			eval(first_code);
 			run_crawl_1(container_link);
 
@@ -889,8 +932,10 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 					   
 					    if (!error && response.statusCode == 200) {
 					        data = "data:" + response.headers["content-type"] + ";base64," + new Buffer.from(body).toString('base64');
-					        torrent_obj['torrent_conv'].push(data);   
-					     
+
+					        cloudinary.uploader.upload(data, function(error, result) {
+					        	torrent_obj['torrent_conv'].push(result);   
+					        });
 					    }
 					});
 				}
@@ -899,7 +944,10 @@ function get_torrent_info(torrent , max , container_link, category, second_code 
 				   
 				    if (!error && response.statusCode == 200) {
 				        data = "data:" + response.headers["content-type"] + ";base64," + new Buffer.from(body).toString('base64');
-				        torrent_obj.thumbnail = data;
+
+				        cloudinary.uploader.upload(data, function(error, result) {
+				        	 torrent_obj.thumbnail = result;  
+				        });
 				     
 				    }
 				});

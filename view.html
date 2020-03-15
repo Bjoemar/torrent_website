@@ -93,6 +93,7 @@
 
 
 		socket.on('view_file_body',function(data){
+			
 			var structure_len = data[0]['structure'].length;
 
 			// if (structure_len > 0) {
@@ -112,9 +113,11 @@
 					$('head').append('<meta property="og:image" content="https://torrentzip1.com/'+data[0]['image'][0]+'">');
 					meta_image = true;
 			}
-			for(x = 0; x < image_len; x++) {
 
-				$('.torrent_image_holder').append('<img src="'+data[0]['image'][x]+'">');
+
+			for(x = 0; x < image_len; x++) {
+				console.log(data[0]['image'][x])
+				$('.torrent_image_holder').append('<img src="'+data[0]['image'][x]['url']+'">');
 			}
 			setTimeout(function(){
 

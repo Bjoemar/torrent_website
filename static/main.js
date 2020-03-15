@@ -58,11 +58,14 @@ $(document).ready(function(){
 	setTimeout(function(){
 
 		$('.animated_slide').slick({
+			  prevArrow:$('.prev'),
+			  nextArrow:$('.next'),
 			  infinite: true,
 			  slidesToShow: 6,
 			  slidesToScroll: 1,
-			  arrows: false,
+			  arrows: true,
 			  autoplay: true,
+			
 			  autoplaySpeed: 1500,
 			  responsive: [
 			     {
@@ -81,7 +84,7 @@ $(document).ready(function(){
 
 			setTimeout(function(){
 				$('.slider').css('height' , $('.slick-track').height() * 1.2);
-			},2000);
+			},1500);
 			
 		},200)
 	},500);
@@ -146,7 +149,6 @@ $.ajax({
 	url : '/daily_top_10',
 	method : 'get',
 	success:function(data){
-		console.log(data)
 		var count = data.length;
 		$('#main_top_10').html('');
 	
@@ -181,6 +183,27 @@ $.ajax({
 											'<span class="list_time">'+data[i]['data']+'</span>'+
 											'<div class="clear"></div>'+
 										'</li>')
+		}
+	}
+})
+
+
+
+$.ajax({
+	url : '/feature_list',
+	method : 'get',
+	success:function(data){
+		var count = data.length;
+		$('.feature_slider').html('');
+	
+		for(i = 0; i < count; i++) 
+		{
+
+			$('.feature_slider').append('<div class="slider_content">'+
+							'<a target="_blank" href="/post/'+data[i]['category']+'/'+data[i]['torrent_id']+'"><img src="'+data[i]['thumbnail']['url']+'"></a>'+
+							'<p class="post_title">'+data[i]['title']+'</p><br>'+
+							'<span>Movies</span>'+
+						'</div>')
 		}
 	}
 })

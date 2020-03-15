@@ -13,6 +13,32 @@
 	z-index: 5;*/
 }
 
+.animated_holder:hover .feature_button{
+	display: block!important;
+}
+
+.feature_button {
+	position: absolute;
+	z-index: 25;
+	background: rgba(0,0,0, 0.5);
+	color: white;
+	border:none;
+	font-weight: 900;
+	font-size: 40px;
+	display: none!important;
+}
+
+
+
+.next {
+	right: 10px;
+	
+}
+
+.prev {
+	left: 10px;
+}
+
 .inner_content {
 	border-bottom: 1px solid #ddd;
 	background: #fcfcfc;
@@ -258,8 +284,13 @@
 
 .slider_content img{
 	width: 100%;
-	border-radius: 20px;
+	border-radius: 5px;
 }
+
+.slider_content img:focus{
+	outline: none;
+}
+
 
 
 
